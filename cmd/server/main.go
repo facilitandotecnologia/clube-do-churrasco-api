@@ -4,13 +4,17 @@ import (
 	httpadapter "api/internal/adapters/http"
 	"api/internal/adapters/persistence"
 	"api/internal/application"
+	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 
-	ginSwagger"github.com/swaggo/gin-swagger"
-    swaggerFiles "github.com/swaggo/files"
 	_ "api/docs" // Import the generated Swagger docs
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title Clube do Churrasco API
@@ -20,7 +24,12 @@ func main() {
 
 	//it must be moved for some IoC container or initialization function|object
 	// Load database configuration
-	configFile := "../../internal/adapters/persistence/config/db.yml"
+	fmt.Println(os.Getwd())
+	configFile, err := filepath.Abs("internal/adapters/persistence/config/db.yml")
+	if err != nil {
+		fmt.Println(os.Getwd())
+		//log.Fatal(err)
+	}
 	dbConfig, err := persistence.NewDBConfig(configFile)
 	if err != nil {
 		log.Fatal(err)
