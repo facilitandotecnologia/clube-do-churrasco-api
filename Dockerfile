@@ -8,8 +8,8 @@ WORKDIR /app
 COPY . /app
 
 # Set the environment variables
-ENV GOOS linux
-ENV GOARCH amd64
+ENV GOOS=linux
+ENV GOARCH=amd64
 
 # Build the Go application
 RUN go build -o main ./cmd/server
