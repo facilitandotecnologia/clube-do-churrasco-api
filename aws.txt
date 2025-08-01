@@ -1,0 +1,1 @@
+idp: arn:aws:iam::472772625577:oidc-provider/token.actions.githubusercontent.com
