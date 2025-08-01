@@ -23,7 +23,7 @@ jobs:
 
       - name: Build
         run: |
-          go build -o app .
+          go build -o app ./cmd/server/main.go
 
       - name: Login to AWS
         uses: aws-actions/configure-aws-credentials@v1
