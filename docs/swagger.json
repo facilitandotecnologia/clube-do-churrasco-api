@@ -1,0 +1,129 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for managing users and events in the Clube do Churrasco application.",
+        "title": "Clube do Churrasco API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/events": {
+            "post": {
+                "description": "Create a new event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Create an event//",
+                "parameters": [
+                    {
+                        "description": "Event data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Event"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "'Event' created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Event"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "description": "Create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a user",
+                "parameters": [
+                    {
+                        "description": "User data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.User"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.Event": {
+            "type": "object",
+            "properties": {
+                "attenders": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "details": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.User": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "whatsapp": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
