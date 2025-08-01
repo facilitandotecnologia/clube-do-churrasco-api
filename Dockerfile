@@ -12,7 +12,7 @@ ENV GOOS linux
 ENV GOARCH amd64
 
 # Build the Go application
-RUN go build -o main .
+RUN go build -o main ./cmd/server
 
 # Expose the port that the application will use
 EXPOSE 8080
