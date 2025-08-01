@@ -32,7 +32,8 @@ jobs:
         with:
           aws-region: 'sa-east-1'
           role-to-assume: arn:aws:iam::472772625577:role/Github_action_push_docker_images
-      
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push Docker image
         run: |
