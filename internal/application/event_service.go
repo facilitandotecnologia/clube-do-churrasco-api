@@ -3,6 +3,7 @@ package application
 import (
 	"api/internal/domain"
 	"api/internal/ports"
+	"context"
 )
 
 type EventService struct {
@@ -14,13 +15,13 @@ func NewEventService(repo ports.EventRepository) *EventService {
 }
 
 func (s *EventService) CreateEvent(event *domain.Event) error {
-	return s.Repo.Save(event)
+	return s.Repo.Save(context.Background(), event)
 }
 
 func (s *EventService) GetEvent(id string) (*domain.Event, error) {
-	return s.Repo.FindByID(id)
+	return s.Repo.FindByID(context.Background(), id)
 }
 
 func (s *EventService) ListEvents() ([]*domain.Event, error) {
-	return s.Repo.FindAll()
+	return s.Repo.FindAll(context.Background())
 }

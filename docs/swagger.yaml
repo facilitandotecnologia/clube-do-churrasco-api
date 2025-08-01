@@ -1,0 +1,84 @@
+definitions:
+  domain.Event:
+    properties:
+      attenders:
+        items:
+          type: string
+        type: array
+      date:
+        type: string
+      description:
+        type: string
+      details:
+        type: string
+      id:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      whatsapp:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+info:
+  contact: {}
+  description: API for managing users and events in the Clube do Churrasco application.
+  title: Clube do Churrasco API
+  version: "1.0"
+paths:
+  /events:
+    post:
+      consumes:
+      - application/json
+      description: Create a new event
+      parameters:
+      - description: Event data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Event'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: '''Event'' created'
+          schema:
+            $ref: '#/definitions/domain.Event'
+      summary: Create an event//
+      tags:
+      - Events
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created
+          schema:
+            $ref: '#/definitions/domain.User'
+      summary: Create a user
+      tags:
+      - Users
+swagger: "2.0"

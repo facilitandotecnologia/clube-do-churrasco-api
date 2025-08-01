@@ -4,68 +4,59 @@ import (
 	httpadapter "api/internal/adapters/http"
 	"api/internal/adapters/persistence"
 	"api/internal/application"
-	"context"
-	"log"	
-	"os"
-	"time"
+	"log"
 
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+
+	ginSwagger"github.com/swaggo/gin-swagger"
+    swaggerFiles "github.com/swaggo/files"
+	_ "api/docs" // Import the generated Swagger docs
 )
 
+// @title Clube do Churrasco API
+// @version 1.0
+// @description API for managing users and events in the Clube do Churrasco application.
 func main() {
-	// MongoDB connection
-	mongoURI := os.Getenv("MONGODB_URI")
-	if mongoURI == "" {
-		mongoURI = "mongodb://localhost:27017"
-	}
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
+
+	//it must be moved for some IoC container or initialization function|object
+	// Load database configuration
+	configFile := "../../internal/adapters/persistence/config/db.yml"
+	dbConfig, err := persistence.NewDBConfig(configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
-	db := client.Database("clube_do_churrasco")
+
+	// Create a new MongoDB client
+	client, err := persistence.DB(*dbConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Get a handle to the database
+	db := client.Database(dbConfig.Mongodb.Database)	
 
 	// Repositories
 	userRepo := persistence.NewMongoUserRepository(db, "users")
-	// eventRepo := persistence.NewMongoEventRepository(db, "events") // implement as needed
+	eventRepo := persistence.NewMongoEventRepository(db, "events") // implement as needed
 
 	// Services
 	userService := application.NewUserService(userRepo)
-	// eventService := application.NewEventService(eventRepo) // implement as needed
+	eventService := application.NewEventService(eventRepo) // implement as needed
 
 	// Handlers
-	handler := httpadapter.NewHandler(nil, userService) // pass eventService when implemented
+	handler := httpadapter.NewHandler(eventService, userService) // pass eventService when implemented
 
 	// Gin setup
 	r := gin.Default()
+	//docs.SwaggerInfo.BasePath = "/api/v1" // Set the base path for Swagger
+	//v1 := r.Group("/api/v1")
+	//{
+		// Register Swagger routes
+	//	v1.POST("/users", handler.CreateUser) // Example route, replace with actual routes
+
+	//}
+	//r.GET("/swagger/v1/*any", ginSwagger.WrapHandler(swaggerFiles.NewHandler(), ginSwagger.InstanceName("v1")))
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	httpadapter.RegisterRoutes(r, handler)
 	r.Run()
 }
-
-// Event represents the event model
-type Event struct {
-	ID          string    `json:"id"`
-	Date        time.Time `json:"date" binding:"required"`
-	Description string    `json:"description" binding:"required"`
-	Attenders   []string  `json:"attenders" binding:"required"`
-	Details     string    `json:"details"`
-}
-
-// User represents the user model
-type User struct {
-	ID       string `json:"id"`
-	Name     string `json:"name" binding:"required"`
-	Email    string `json:"email" binding:"required,email"`
-	WhatsApp string `json:"whatsapp" binding:"required"`
-	Password string `json:"password" binding:"required"`
-}
-
-// In-memory event storage (for demonstration)
-var events = []Event{}
-
-// In-memory user storage (for demonstration)
-var users = []User{}
-
-
-

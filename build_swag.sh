@@ -1,0 +1,1 @@
+swag i  -g main.go --parseDependency --parseInternal -dir ./cmd/server,./internal/adapters/http
