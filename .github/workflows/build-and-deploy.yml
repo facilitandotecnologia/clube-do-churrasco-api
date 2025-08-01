@@ -38,4 +38,4 @@ jobs:
         run: |
           docker build -t api .
           docker tag api:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.sa-east-1.amazonaws.com/facilitandotecnologia/clube-do-churrasco/api:latest 
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.sa-east-1.amazonaws.com/facilitandotecnologia/clube-do-churrasco/api:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.sa-east-1.amazonaws.com/facilitandotecnologia/clube-do-churrasco/api:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.sa-east-1.amazonaws.com/facilitandotecnologia/clube-do-churrasco/api:latest 
