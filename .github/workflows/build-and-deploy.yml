@@ -31,7 +31,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: 'sa-east-1'
-          role-to-assume: arn:aws:iam::472772625577:oidc-provider/token.actions.githubusercontent.com
+          role-to-assume: arn:aws:iam::472772625577:role/Github_action_push_docker_images
       
 
       - name: Build and push Docker image
